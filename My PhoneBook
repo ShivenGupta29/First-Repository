@@ -1,0 +1,413 @@
+#include <stdio.h>                                                 //used for input output
+#include <string.h>                                                // used for string
+
+void arrangearray(char arrname[][20], int size, char arrnum[][20]) // arranges using bubble sort
+{
+    char tempname[20];             // name can have max 19 characters + extra for null terminator \0
+    char tempnum[20];              // num can have max 19 characters + extra for null terminator \0
+    for (int i = 0; i < size; i++) // each swap
+    {
+        for (int j = 0; j < size - i - 1; j++) // each pass in one swap
+        {
+            if (strcmp(arrname[j], arrname[j + 1]) > 0) // checks whether the jth elemant is greater than the element after it (j+1)
+            {
+                strcpy(tempname, arrname[j]); // swaps the name
+                strcpy(arrname[j], arrname[j + 1]);
+                strcpy(arrname[j + 1], tempname);
+
+                strcpy(tempnum, arrnum[j]); // swaps the number corresponding to it
+                strcpy(arrnum[j], arrnum[j + 1]);
+                strcpy(arrnum[j + 1], tempnum);
+            }
+        }
+    }
+}
+void namesprint(char arr1[][20], int len)
+{
+    for (int j = 0; j < len; j++)
+    {
+        printf("%s\n", arr1[j]);
+    }
+}
+
+void addarray(char arrname[][20], int *size, char arrnum[][20]) // pointer to size is taken coz we need to increament the current occupied size after each addition
+{
+    char newname[20];
+    char newnum[20];
+    printf("Enter the name of the Person \n  ");
+    scanf("%s", newname); // takes new name to be added by the user
+    printf("Enter the number of the Person \n ");
+    scanf("%s", newnum);             // takes new num to be added by the user
+    strcpy(arrname[*size], newname); // copy the string(name) at the next available memory, here the last added name is not sorted
+    strcpy(arrnum[*size], newnum);   // copy the string(num) at the next available memory
+    (*size)++;                       // increment the current occupied size in our array
+}
+void delarray(char arrname[][20], int *size, char arrnum[][20]) // pointer to size is taken coz we need to decrement the current occupied size after each deletion
+{
+    char delname[10]; // max size for the deleted name can be 9 characters
+    int len = *size;  // stores the current occupied size in 3rd variable so that the size decrement doesn't effect the loop run
+    printf("Enter the name you want to delete \n ");
+    scanf("%s", delname);
+    int index = -1;                 // initialize the index to -1 saying that we din't find the name yet.
+    for (int i = 0; i < len; i++) // iterates till size n
+    {
+        if (strcmp(arrname[i], delname) == 0) // checks if the name =i is same as the name user wants to delete then strcmp will compare and five it 0 will will be equa to 0 hence true hence it will go inside the loop and proceed the deletion
+        {
+            index = i; // index to delete has become the index we found the desired name
+            break;   // if name found exit the loop
+        }
+    }
+    if (index == -1) // if after the iteration con value remains -1 means name was not found
+    {
+        printf("\nName not found\n");
+        
+    }
+    else
+    {
+        for (int j = index; j < len - 1; j++) // loop runs from the index the name to deleted was found till the 2nd last index of len
+        {
+            strcpy(arrname[j], arrname[j + 1]); // shifts or overwrite the next index name to previous , like shifting 5th name to 4th and so on
+            strcpy(arrnum[j], arrnum[j + 1]);   // shifts or overwrite the next index num to previous , like shifting 5th num to 4th and so on
+        }
+        (*size)--; // dcrement the size of name array once the desired name is deleted
+    }
+}
+void editarray(char arrname[][20], int size, char arrnum[][20])
+{
+    char nam[20];
+    printf("\nEnter the name you want to change\n");
+    scanf("%s", nam);
+    int index = -1;                  // initialize the index to -1 saying that we din't find the name to be edited yet.
+    for (int i = 0; i < size; i++) //  loops through all the current occupies name
+    {
+        if (strcmp(arrname[i], nam) == 0) // if arr name is equal to the nam user provided then strcmp return 0 which will be equal to 0 and it will enter the loop
+        {
+            index = i; // assign the index of found name
+            break;
+        }
+    }
+    if (index != -1) // means that now index holds the value of index at which the name was found
+    {
+        printf("\nTell you want to change the name or the number\n");
+        char check[20]; // hold whether we want to change name or num ?
+        scanf("%s", check);
+        char newname[20];
+        char newnum[20];
+        if (strcmp(check, "name") == 0) // if check contains a name to be edited then strcmp will return 0
+        {
+            printf("Enter the new Name\n");
+            scanf("%s", newname);
+            strcpy(arrname[index], newname); // at the index where our previous name was found , it will be replaced with new name
+            printf("The updated array is\n");
+            arrangearray(arrname, size, arrnum); // sort the updated array as changing name mighe be suited at some other place
+            namesprint(arrname, size);
+        }
+        else if (strcmp(check, "number") == 0) // if check had num by the user
+        {
+            printf("The old number is %s\n", arrnum[index]); // prints the old num at index con
+            printf("Enter the new Number\n");
+            scanf("%s", newnum);
+
+            strcpy(arrnum[index], newnum);                                    // at the index our num was found replace it with new num
+            printf("Now %s's number is %s\n", arrname[index], arrnum[index]); // print the new array . we don't need to update as alphabets remains same
+        }
+    }
+    else
+    {
+        printf("The name is not found\n");
+    }
+}
+// PARNA RAY 1191
+void binary(char arrname[][20],int size,char find[],char arrnum[][20])
+{
+    int first=0;
+    int f=0;
+    int last=size;
+    int mid;
+    while(first<last)
+    {
+        mid=(first+last)/2;
+        if(strcmp(arrname[mid],find)==0)
+        {
+            f=1;
+            break;
+        }
+        else if(strcmp(arrname[mid],find)<=0)
+        {
+            first=mid+1;
+        }
+        else 
+        {
+            last=mid-1;
+        }
+        
+    }
+    if(f!=0)
+    {
+        printf("\n%s's number is %s\n",arrname[mid],arrnum[mid]);
+    }
+    else
+    {
+        printf("\nName not found!\n");
+    }
+}
+int main()
+{
+
+    char arrname[100][20] = {"gupta", "shiven", "rishika", "akshat", "parna", "purvi"}; // 100 for max number of names in phonebook 20 for max number of alphabets a name or number can have , here it will be 99 and 19 respectively
+    char arrnum[100][20] = {"241001001286", "2410010012454", "241001001289", "241001001270", "241001001191", "241001001162"};
+
+    int currsize = 6; // currently occupied spaces
+
+    arrangearray(arrname, currsize, arrnum); // sorts the array acc to names ASCII value
+    namesprint(arrname, currsize);           // prints the sorted array
+    char search[10];                         // search for desired vales
+    printf("Enter the name of the person to find there number\n");
+    scanf("%s", search);
+    binary(arrname, currsize, search, arrnum); // cheks if the name or num is present or not
+
+    printf("If you want to add any number type add or if you want to delete any number type del \n");
+    char check[5]; // we expect input as add or del so 3 + 1 for null character
+    scanf("%s", check);
+
+    if (strcmp(check, "add") == 0) // if user inputs add
+    {
+        addarray(arrname, &currsize, arrnum); // name is added
+        printf("The updated array is\n");
+        arrangearray(arrname, currsize, arrnum); // names are arranged
+        namesprint(arrname, currsize);
+    }
+    else if (strcmp(check, "del") == 0) // if user inputs del
+    {
+        delarray(arrname, &currsize, arrnum);
+        printf("The updated array is\n");
+        arrangearray(arrname, currsize, arrnum); // no need
+        namesprint(arrname, currsize);
+    }
+    else
+    {
+        printf("Invalid Input\n"); // if user enters anything other than add or del
+    }
+    char edit[5];
+    printf("Enter yes to edit the phonebook or no to exit \n");
+    scanf("%s", edit);
+    if (strcmp(edit, "yes") == 0) // if user enters yes , we proceed to edit
+    {
+        editarray(arrname, currsize, arrnum);
+    }
+    else if (strcmp(edit, "no") == 0) // if user enters no we don't proceed
+    {
+        printf("Bye!\n");
+    }
+    else
+    {
+        printf("Wrong Input!\n"); // anything other than yes or no is invalid
+    }
+    return 0;
+}#include <stdio.h>                                                 //used for input output
+#include <string.h>                                                // used for string
+
+void arrangearray(char arrname[][20], int size, char arrnum[][20]) // arranges using bubble sort
+{
+    char tempname[20];             // name can have max 19 characters + extra for null terminator \0
+    char tempnum[20];              // num can have max 19 characters + extra for null terminator \0
+    for (int i = 0; i < size; i++) // each swap
+    {
+        for (int j = 0; j < size - i - 1; j++) // each pass in one swap
+        {
+            if (strcmp(arrname[j], arrname[j + 1]) > 0) // checks whether the jth elemant is greater than the element after it (j+1)
+            {
+                strcpy(tempname, arrname[j]); // swaps the name
+                strcpy(arrname[j], arrname[j + 1]);
+                strcpy(arrname[j + 1], tempname);
+
+                strcpy(tempnum, arrnum[j]); // swaps the number corresponding to it
+                strcpy(arrnum[j], arrnum[j + 1]);
+                strcpy(arrnum[j + 1], tempnum);
+            }
+        }
+    }
+}
+void namesprint(char arr1[][20], int len)
+{
+    for (int j = 0; j < len; j++)
+    {
+        printf("%s\n", arr1[j]);
+    }
+}
+
+void addarray(char arrname[][20], int *size, char arrnum[][20]) // pointer to size is taken coz we need to increament the current occupied size after each addition
+{
+    char newname[20];
+    char newnum[20];
+    printf("Enter the name of the Person \n  ");
+    scanf("%s", newname); // takes new name to be added by the user
+    printf("Enter the number of the Person \n ");
+    scanf("%s", newnum);             // takes new num to be added by the user
+    strcpy(arrname[*size], newname); // copy the string(name) at the next available memory, here the last added name is not sorted
+    strcpy(arrnum[*size], newnum);   // copy the string(num) at the next available memory
+    (*size)++;                       // increment the current occupied size in our array
+}
+void delarray(char arrname[][20], int *size, char arrnum[][20]) // pointer to size is taken coz we need to decrement the current occupied size after each deletion
+{
+    char delname[10]; // max size for the deleted name can be 9 characters
+    int len = *size;  // stores the current occupied size in 3rd variable so that the size decrement doesn't effect the loop run
+    printf("Enter the name you want to delete \n ");
+    scanf("%s", delname);
+    int index = -1;                 // initialize the index to -1 saying that we din't find the name yet.
+    for (int i = 0; i < len; i++) // iterates till size n
+    {
+        if (strcmp(arrname[i], delname) == 0) // checks if the name =i is same as the name user wants to delete then strcmp will compare and five it 0 will will be equa to 0 hence true hence it will go inside the loop and proceed the deletion
+        {
+            index = i; // index to delete has become the index we found the desired name
+            break;   // if name found exit the loop
+        }
+    }
+    if (index == -1) // if after the iteration con value remains -1 means name was not found
+    {
+        printf("\nName not found\n");
+        
+    }
+    else
+    {
+        for (int j = index; j < len - 1; j++) // loop runs from the index the name to deleted was found till the 2nd last index of len
+        {
+            strcpy(arrname[j], arrname[j + 1]); // shifts or overwrite the next index name to previous , like shifting 5th name to 4th and so on
+            strcpy(arrnum[j], arrnum[j + 1]);   // shifts or overwrite the next index num to previous , like shifting 5th num to 4th and so on
+        }
+        (*size)--; // dcrement the size of name array once the desired name is deleted
+    }
+}
+void editarray(char arrname[][20], int size, char arrnum[][20])
+{
+    char nam[20];
+    printf("\nEnter the name you want to change\n");
+    scanf("%s", nam);
+    int index = -1;                  // initialize the index to -1 saying that we din't find the name to be edited yet.
+    for (int i = 0; i < size; i++) //  loops through all the current occupies name
+    {
+        if (strcmp(arrname[i], nam) == 0) // if arr name is equal to the nam user provided then strcmp return 0 which will be equal to 0 and it will enter the loop
+        {
+            index = i; // assign the index of found name
+            break;
+        }
+    }
+    if (index != -1) // means that now index holds the value of index at which the name was found
+    {
+        printf("\nTell you want to change the name or the number\n");
+        char check[20]; // hold whether we want to change name or num ?
+        scanf("%s", check);
+        char newname[20];
+        char newnum[20];
+        if (strcmp(check, "name") == 0) // if check contains a name to be edited then strcmp will return 0
+        {
+            printf("Enter the new Name\n");
+            scanf("%s", newname);
+            strcpy(arrname[index], newname); // at the index where our previous name was found , it will be replaced with new name
+            printf("The updated array is\n");
+            arrangearray(arrname, size, arrnum); // sort the updated array as changing name mighe be suited at some other place
+            namesprint(arrname, size);
+        }
+        else if (strcmp(check, "number") == 0) // if check had num by the user
+        {
+            printf("The old number is %s\n", arrnum[index]); // prints the old num at index con
+            printf("Enter the new Number\n");
+            scanf("%s", newnum);
+
+            strcpy(arrnum[index], newnum);                                    // at the index our num was found replace it with new num
+            printf("Now %s's number is %s\n", arrname[index], arrnum[index]); // print the new array . we don't need to update as alphabets remains same
+        }
+    }
+    else
+    {
+        printf("The name is not found\n");
+    }
+}
+// PARNA RAY 1191
+void binary(char arrname[][20],int size,char find[],char arrnum[][20])
+{
+    int first=0;
+    int f=0;
+    int last=size;
+    int mid;
+    while(first<last)
+    {
+        mid=(first+last)/2;
+        if(strcmp(arrname[mid],find)==0)
+        {
+            f=1;
+            break;
+        }
+        else if(strcmp(arrname[mid],find)<=0)
+        {
+            first=mid+1;
+        }
+        else 
+        {
+            last=mid-1;
+        }
+        
+    }
+    if(f!=0)
+    {
+        printf("\n%s's number is %s\n",arrname[mid],arrnum[mid]);
+    }
+    else
+    {
+        printf("\nName not found!\n");
+    }
+}
+int main()
+{
+
+    char arrname[100][20] = {"gupta", "shiven", "rishika", "akshat", "parna", "purvi"}; // 100 for max number of names in phonebook 20 for max number of alphabets a name or number can have , here it will be 99 and 19 respectively
+    char arrnum[100][20] = {"241001001286", "2410010012454", "241001001289", "241001001270", "241001001191", "241001001162"};
+
+    int currsize = 6; // currently occupied spaces
+
+    arrangearray(arrname, currsize, arrnum); // sorts the array acc to names ASCII value
+    namesprint(arrname, currsize);           // prints the sorted array
+    char search[10];                         // search for desired vales
+    printf("Enter the name of the person to find there number\n");
+    scanf("%s", search);
+    binary(arrname, currsize, search, arrnum); // cheks if the name or num is present or not
+
+    printf("If you want to add any number type add or if you want to delete any number type del \n");
+    char check[5]; // we expect input as add or del so 3 + 1 for null character
+    scanf("%s", check);
+
+    if (strcmp(check, "add") == 0) // if user inputs add
+    {
+        addarray(arrname, &currsize, arrnum); // name is added
+        printf("The updated array is\n");
+        arrangearray(arrname, currsize, arrnum); // names are arranged
+        namesprint(arrname, currsize);
+    }
+    else if (strcmp(check, "del") == 0) // if user inputs del
+    {
+        delarray(arrname, &currsize, arrnum);
+        printf("The updated array is\n");
+        arrangearray(arrname, currsize, arrnum); // no need
+        namesprint(arrname, currsize);
+    }
+    else
+    {
+        printf("Invalid Input\n"); // if user enters anything other than add or del
+    }
+    char edit[5];
+    printf("Enter yes to edit the phonebook or no to exit \n");
+    scanf("%s", edit);
+    if (strcmp(edit, "yes") == 0) // if user enters yes , we proceed to edit
+    {
+        editarray(arrname, currsize, arrnum);
+    }
+    else if (strcmp(edit, "no") == 0) // if user enters no we don't proceed
+    {
+        printf("Bye!\n");
+    }
+    else
+    {
+        printf("Wrong Input!\n"); // anything other than yes or no is invalid
+    }
+    return 0;
+}
