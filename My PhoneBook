@@ -117,7 +117,6 @@ void editarray(char arrname[][20], int size, char arrnum[][20])
         printf("The name is not found\n");
     }
 }
-// PARNA RAY 1191
 void binary(char arrname[][20],int size,char find[],char arrnum[][20])
 {
     int first=0;
