@@ -1,0 +1,51 @@
+#include <stdio.h>
+//#define max 100
+void arrange(int arr[],int n)
+{
+    int temp=0;
+    for(int j=0;j<n;j++)
+    {
+        for(int i=0;i<n-j-1;i++)
+        {
+            if(arr[i]>arr[i+1])
+            {   
+                temp=arr[i+1];
+                arr[i+1]=arr[i];
+                arr[i]=temp;
+            }
+        }
+        
+    }
+}
+void printing(int arr[],int m)
+{
+    for(int i=0;i<m;i++)
+    {
+        printf(" %d ",arr[i]);
+    }
+}
+void nodup(int arr[],int *p)
+{
+    int l=*p; 
+    int x=0;
+    int f=-1;
+    for(int i=1;i<=l;i++)
+    {
+        if(arr[x]!=arr[i])
+        {
+            x=x+1;
+            arr[x]=arr[i];
+            f++;
+        }
+    }
+    *p=f;
+}
+int main()
+{
+    int arr[]={1,9,7,7,4,4,2,6,6,5,0};
+    int len=sizeof(arr)/sizeof(arr[0]);
+    
+    nodup(arr,&len);
+    arrange(arr,len);
+    printing(arr,len);
+}
