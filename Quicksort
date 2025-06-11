@@ -1,0 +1,43 @@
+#include <stdio.h>
+
+int partition(int arr[] , int st , int end)
+{
+    int idx = st - 1 ;
+    int temp;
+    int pivot=arr[end];
+    for(int j=st;j<end;j++)
+    {
+        if(arr[j]<pivot)
+        {
+            idx++;
+            temp=arr[j];
+            arr[j]=arr[idx];
+            arr[idx]=temp;
+        }
+        temp=arr[idx+1];
+        arr[idx+1]=arr[end];
+        arr[end]=temp;
+        
+    }
+    return idx+1;
+}
+void quicksort(int arr[],int st,int end)
+{
+    if(st<end)
+    {
+        int pividx=partition(arr,st,end);
+        quicksort(arr,st,pividx-1);
+        quicksort(arr,pividx+1,end);
+    }
+}
+int main() {
+    int  arr[] ={ 4,6,3,1,9,7,2};
+    int end=  sizeof(arr) / sizeof(arr[0]) ;
+    quicksort (arr,0,end-1);
+    printf("The order array is \n");
+    for(int i=0;i<end;i++)
+    {
+        printf("%d ",arr[i]);
+    }
+    return 0;
+}
