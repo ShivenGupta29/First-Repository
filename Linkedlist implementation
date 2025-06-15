@@ -1,0 +1,58 @@
+#include <stdio.h>
+#include <stdlib.h>
+struct node{
+    int data;
+    struct node* next;
+};
+struct node*Createnode(int value)
+{
+    struct node* newnode = (struct node*)malloc(sizeof(struct node));
+    newnode->data = value;
+    newnode->next=NULL;
+    return newnode;
+}
+void insertAtEnd(struct node** head,int value)
+{
+    struct node*newNode=Createnode(value);
+    if(*head ==NULL)
+    {
+        *head=newNode;
+        return;
+    }
+    struct node*temp=*head;
+    while(temp->next !=NULL)
+    {
+        temp=temp->next;
+        
+    }
+    temp->next=newNode;
+}
+void printlist(struct node *head)
+{
+    struct node*temp=head;
+    while(temp!=NULL)
+    {
+        printf("%d->",temp->data);
+        temp=temp->next;
+    }
+    printf("NULL\n");
+}
+
+int main() {
+    struct node*head=NULL;
+    printf("Enter the number length of the linkedlist- ");
+    int x=0;
+    int count=0;
+    int value;
+    scanf("%d",&x);
+    while(count<x)
+    {
+        printf("Enter the value- ");
+        scanf("%d",&value);
+        insertAtEnd(&head,value);
+        count++;
+    }
+    printf("The Linked list is :");
+    printlist(head);
+    return 0;
+}
