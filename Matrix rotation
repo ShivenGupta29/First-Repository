@@ -1,0 +1,38 @@
+#include <stdio.h>
+
+int main() {
+    int matrix[3][3] = {
+        {1, 2, 3},
+        {4, 5, 6},
+        {7, 8, 9}
+    };
+
+    // Print the 3x3 matrix
+    printf("The 3x3 matrix is:\n");
+    for(int i = 0; i < 3; i++) {
+        for(int j = 0; j < 3; j++) {
+            printf("%d\t", matrix[i][j]);
+        }
+        printf("\n");
+    }
+    printf("the reverse matrix in clockwise is \n");
+    for(int x=0;x<3;x++)
+    {
+        for (int y=2;y>=0;y--)
+        {
+            printf("%d ",matrix[y][x]);
+        }
+        printf("\n");
+    }
+    printf("the reverse matrix in anticlockwise is \n");
+    for(int x=2;x>=0;x--)
+    {
+        for (int y=0;y<3;y++)
+        {
+            printf("%d ",matrix[y][x]);
+        }
+        printf("\n");
+    }
+
+    return 0;
+}
